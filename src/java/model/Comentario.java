@@ -4,7 +4,6 @@
  */
 package model;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,52 +12,46 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  *
  * @author raulp
  */
 
+
+
 @Entity
-@Table(name="articulos")
+@Table(name="comentarios")
 @NamedQueries({
- @NamedQuery(name="Articulo.findAll", query="SELECT a FROM Articulo a"),
+ @NamedQuery(name="Comentario.findAll", query="SELECT c FROM Comentario c"),
 })
-public class Articulo implements Serializable {
+public class Comentario implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String titulo;
-    private String cuerpo;
+    private String autor;
+    private String texto;
     private String fechaPublicacion;
     
     @ManyToOne
-    @JoinColumn(name = "categoria_id", nullable = false)
-    private Categoria categoria;
-    
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario autor;
-    
-    @OneToMany(mappedBy = "comentario", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Comentario> comentario;
+    @JoinColumn(name = "articulo_id", nullable = false)
+    private Articulo articulo;
 
-    public Articulo() {
+    public Comentario() {
     }
-
-    public Articulo(String titulo, String cuerpo, Categoria categoria, String fechaPublicacion, Usuario autor) {
-        this.titulo = titulo;
-        this.cuerpo = cuerpo;
-        this.categoria = categoria;
-        this.fechaPublicacion = fechaPublicacion;
+    
+    public Comentario(String autor, String texto, String fechaPublicacion, Articulo articulo) {
         this.autor = autor;
+        this.texto = texto;
+        this.fechaPublicacion = fechaPublicacion;
+        this.articulo = articulo;
     }
+    
+    
 
     public Long getId() {
         return id;
@@ -78,10 +71,10 @@ public class Articulo implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Articulo)) {
+        if (!(object instanceof Comentario)) {
             return false;
         }
-        Articulo other = (Articulo) object;
+        Comentario other = (Comentario) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -90,31 +83,23 @@ public class Articulo implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Articulo[ id=" + id + " ]";
+        return "model.Comentario[ id=" + id + " ]";
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getAutor() {
+        return autor;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setAutor(String autor) {
+        this.autor = autor;
     }
 
-    public String getCuerpo() {
-        return cuerpo;
+    public String getTexto() {
+        return texto;
     }
 
-    public void setCuerpo(String cuerpo) {
-        this.cuerpo = cuerpo;
-    }
-
-    public Categoria getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public void setTexto(String texto) {
+        this.texto = texto;
     }
 
     public String getFechaPublicacion() {
@@ -125,22 +110,12 @@ public class Articulo implements Serializable {
         this.fechaPublicacion = fechaPublicacion;
     }
 
-    public Usuario getAutor() {
-        return autor;
+    public Articulo getArticulo() {
+        return articulo;
     }
 
-    public void setAutor(Usuario autor) {
-        this.autor = autor;
+    public void setArticulo(Articulo articulo) {
+        this.articulo = articulo;
     }
     
-    public List<Comentario> getComentario() {
-        return comentario;
-    }
-
-    public void setComentario(List<Comentario> comentario) {
-        this.comentario = comentario;
-    }
-    
-    
-
 }
