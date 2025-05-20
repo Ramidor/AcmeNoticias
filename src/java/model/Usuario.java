@@ -26,6 +26,8 @@ import java.util.List;
 @Entity
 @Table(name = "usuarios")
 @NamedQueries({
+    @NamedQuery(name = "Usuario.findByEmail", query = "SELECT u FROM Usuario u WHERE u.email = :email"),
+    @NamedQuery(name = "Usuario.findByEmailPassword", query = "SELECT u FROM Usuario u WHERE u.email = :email AND u.password = :password"),
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
     @NamedQuery(name = "Usuario.findByName", query = "SELECT u FROM Usuario u WHERE u.nombre =:nombre"),})
 public class Usuario implements Serializable {
@@ -34,16 +36,14 @@ public class Usuario implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nombre;
     private String email;
     private String password;
     private String rol;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Articulo> articulo;
-
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Comentario> comentario;
 
     public Usuario() {
     }
@@ -54,7 +54,6 @@ public class Usuario implements Serializable {
         this.password = password;
         this.rol = rol;
         articulo = new ArrayList<>();
-        comentario = new ArrayList<>();
     }
 
     public String getNombre() {
@@ -103,14 +102,6 @@ public class Usuario implements Serializable {
 
     public void setArticulo(List<Articulo> articulo) {
         this.articulo = articulo;
-    }
-
-    public List<Comentario> getComentario() {
-        return comentario;
-    }
-
-    public void setComentario(List<Comentario> comentario) {
-        this.comentario = comentario;
     }
 
     @Override

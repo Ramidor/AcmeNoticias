@@ -34,19 +34,20 @@ public class Articulo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String titulo;
     private String cuerpo;
     private String fechaPublicacion;
-    
+
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
-    
+
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario autor;
-    
-    @OneToMany(mappedBy = "comentario", cascade = CascadeType.REMOVE, orphanRemoval = true)
+
+    @OneToMany(mappedBy = "articulo", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comentario> comentario;
 
     public Articulo() {

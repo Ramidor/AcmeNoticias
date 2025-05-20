@@ -36,11 +36,11 @@ public class Comentario implements Serializable {
     private String autor;
     private String texto;
     private String fechaPublicacion;
-    
+
     @ManyToOne
     @JoinColumn(name = "articulo_id", nullable = false)
     private Articulo articulo;
-
+    
     public Comentario() {
     }
     

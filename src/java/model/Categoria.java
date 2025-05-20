@@ -14,6 +14,8 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -33,18 +35,18 @@ public class Categoria implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     private String tipoCategoria;
     private String descripcion;
-    
+
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Articulo articulo;
+    private List<Articulo> articulo;
     
     public Categoria() {
     }
     
-    public Categoria(Articulo articulo, String tipoCategoria, String descripcion) {
-        this.articulo = articulo;
+    public Categoria(String tipoCategoria, String descripcion) {
+        articulo = new ArrayList<>();
         this.tipoCategoria = tipoCategoria;
         this.descripcion = descripcion;
     }
@@ -82,11 +84,11 @@ public class Categoria implements Serializable {
         return "model.Categoria[ id=" + id + " ]";
     }
 
-    public Articulo getArticulo() {
+    public List<Articulo> getArticulo() {
         return articulo;
     }
 
-    public void setArticulo(Articulo articulo) {
+    public void setArticulo(List<Articulo> articulo) {
         this.articulo = articulo;
     }
 
