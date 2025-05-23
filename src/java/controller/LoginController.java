@@ -28,7 +28,7 @@ import others.MD5Utils;
  *
  * @author raulp
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/login/*", "/register"})
+@WebServlet(name = "LoginController", urlPatterns = {"/login/*", "/register/*", "/inicio"})
 public class LoginController extends HttpServlet {
 
     @PersistenceContext(unitName = "AcmeNoticiasPU")
@@ -38,7 +38,7 @@ public class LoginController extends HttpServlet {
     private UserTransaction utx;
     private static final Logger Log = Logger.getLogger(LoginController.class.getName());
     
-    private String localhost = "127.0.0.1";
+    private String localhost = "localhost:8080";
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

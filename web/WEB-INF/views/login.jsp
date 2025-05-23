@@ -1,46 +1,118 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Login</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    </head>
-    <body>
-        <%@include file="common/header2.jsp" %>
-        <c:if test="${!empty requestScope.msg}">
-            <div class="alert alert-warning text-center" role="alert">
-                ${requestScope.msg}
-            </div>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Iniciar Sesi髇</title>
+    <style>
+        /* Usamos la misma paleta de colores */
+        :root {
+            --color-fondo: #F5F5F5;
+            --color-principal-claro: #48CFCB;
+            --color-principal-oscuro: #229799;
+            --color-texto: #424242;
+            --color-tarjeta: #ffffff;
+            --color-titulo: #229799;
+            --color-enlace: #48CFCB;
+            --color-enlace-hover: #229799;
+        }
+
+        body {
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: var(--color-tarjeta);
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        .login-container h2 {
+            color: var(--color-titulo);
+            margin-bottom: 25px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: 600;
+            text-align: left;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            padding: 10px 12px;
+            border: 1.5px solid var(--color-principal-claro);
+            border-radius: 6px;
+            font-size: 1em;
+            color: var(--color-texto);
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: var(--color-principal-oscuro);
+            outline: none;
+        }
+
+        button {
+            background-color: var(--color-principal-claro);
+            color: white;
+            font-weight: 700;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: var(--color-principal-oscuro);
+        }
+
+        .error-message {
+            color: #d9534f;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Iniciar Sesi髇</h2>
+    <form action="/AcmeNoticias/login" method="post">
+        <label for="email">Correo electr髇ico</label>
+        <input type="email" id="email" name="email" required autofocus />
+
+        <label for="password">Contrase馻</label>
+        <input type="password" id="password" name="password" required />
+
+        <button type="submit">Entrar</button>
+
+
+        <c:if test="${not empty error}">
+            <div class="error-message">${error}</div>
         </c:if>
-        <div class="container mt-5">
-            <h1 class="text-center">Bienvenido</h1>
-            <p class="text-center text-muted">Por favor, inicie sesi贸n para continuar.</p>
-        </div>
+    </form>
+</div>
 
-        <div class="container d-flex justify-content-center align-items-center" style="min-height: 60vh;">
-            <div class="card p-4 shadow-lg" style="width: 400px;">
-                <h2 class="text-center mb-4">Iniciar Sesi贸n</h2>
-
-                <form action="/GameStore/login/check" method="POST">
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Correo Electr贸nico</label>
-                        <input type="email" id="email" name="email" class="form-control" placeholder="usuario@ejemplo.com" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Contrase帽a</label>
-                        <input type="password" name="password" id="password" class="form-control" placeholder="Ingrese su contrase帽a" required>
-                    </div>
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Iniciar Sesi贸n</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <%@include file="common/footer.jsp" %>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+</body>
 </html>
