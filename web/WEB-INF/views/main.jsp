@@ -9,16 +9,8 @@
 </head>
 <body>
 
-    <!-- ? Header general -->
-<header class="header-principal">
-    <nav class="nav-principal">
-        <ul>
-            <li><a href="/AcmeNoticias/home">Menú</a></li>
-            <li><a href="/AcmeNoticias/perfil">Perfil</a></li>
-            <li><a href="/AcmeNoticias/logout">Cerrar sesión</a></li>
-        </ul>
-    </nav>
-</header>
+<!-- ? Header general -->
+<%@include file="common/header.jsp" %>
 
 <!-- ? Filtro de categorías -->
 <section class="filtro-categorias">

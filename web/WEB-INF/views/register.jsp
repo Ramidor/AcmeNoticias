@@ -99,9 +99,9 @@
 
 <div class="registro-container">
     <h2>Crear Cuenta</h2>
-    <form action="/AcmeNoticias/register" method="post">
-        <label for="username">Usuario</label>
-        <input type="text" id="username" name="username" required autofocus />
+    <form action="/AcmeNoticias/register/save" method="post">
+        <label for="name">Nombre</label>
+        <input type="text" id="name" name="name" required autofocus />
 
         <label for="email">Correo electrónico</label>
         <input type="email" id="email" name="email" required />

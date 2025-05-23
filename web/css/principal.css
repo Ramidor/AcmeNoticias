@@ -307,3 +307,228 @@ body {
 .formulario-comentario button:hover {
     background-color: var(--color-principal-oscuro);
 }
+
+
+.crear-articulo-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--color-tarjeta);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.crear-articulo-container h1 {
+    font-size: 1.8em;
+    color: var(--color-titulo);
+    margin-bottom: 25px;
+}
+
+.form-crear-articulo {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-crear-articulo label {
+    font-weight: bold;
+    color: var(--color-texto);
+}
+
+.form-crear-articulo input[type="text"],
+.form-crear-articulo select,
+.form-crear-articulo textarea {
+    padding: 10px;
+    font-size: 1em;
+    border: 1.5px solid var(--color-principal-claro);
+    border-radius: 8px;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+}
+
+.form-crear-articulo input:focus,
+.form-crear-articulo select:focus,
+.form-crear-articulo textarea:focus {
+    border-color: var(--color-principal-oscuro);
+    outline: none;
+}
+
+.form-crear-articulo button {
+    align-self: flex-start;
+    padding: 10px 24px;
+    background-color: var(--color-principal-claro);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-crear-articulo button:hover {
+    background-color: var(--color-principal-oscuro);
+}
+
+
+/* =======================
+   📊 Dashboard Admin
+   ======================= */
+.dashboard-estadisticas,
+.dashboard-top-articulos {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 20px 30px;
+    background-color: var(--color-tarjeta);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-estadisticas h2,
+.dashboard-top-articulos h2 {
+    color: var(--color-titulo);
+    margin-bottom: 15px;
+    font-size: 1.8em;
+}
+
+.dashboard-estadisticas p {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--color-texto);
+}
+
+
+/* =======================
+   📁 CRUD de Categorías
+   ======================= */
+.crud-categorias-container {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: var(--color-tarjeta);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.crud-categorias-container h2 {
+    color: var(--color-titulo);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.tabla-categorias {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.tabla-categorias th,
+.tabla-categorias td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.tabla-categorias th {
+    background-color: var(--color-principal-claro);
+    color: white;
+    font-weight: bold;
+}
+
+.btn-editar,
+.btn-eliminar,
+.btn-agregar {
+    padding: 8px 12px;
+    margin: 2px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-editar {
+    background-color: var(--color-principal-claro);
+    color: white;
+}
+
+.btn-eliminar {
+    background-color: #d9534f;
+    color: white;
+}
+
+.btn-agregar {
+    background-color: var(--color-principal-oscuro);
+    color: white;
+}
+
+.btn-editar:hover {
+    background-color: var(--color-principal-oscuro);
+}
+
+.btn-eliminar:hover {
+    background-color: #c9302c;
+}
+
+.btn-agregar:hover {
+    background-color: #1b6b6c;
+}
+
+.agregar-categoria form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.agregar-categoria input[type="text"] {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1.5px solid var(--color-principal-claro);
+    font-size: 1em;
+    width: 60%;
+}
+
+
+/* ============================
+   🎛️ Panel Admin - Artículos
+   ============================ */
+.admin-controles-articulo {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-modificar,
+.btn-eliminar {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.9em;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-modificar {
+    background-color: #0275d8;
+    color: white;
+}
+
+.btn-eliminar {
+    background-color: #d9534f;
+    color: white;
+}
+
+.btn-modificar:hover {
+    background-color: #025aa5;
+}
+
+.btn-eliminar:hover {
+    background-color: #c9302c;
+}
+
+/* 🔗 Enlaces del header admin */
+.header-principal .nav-principal ul li a {
+    font-weight: bold;
+}

@@ -147,7 +147,7 @@ public class LoginController extends HttpServlet {
                             request.setAttribute("msg", "Error: debe rellenar todos los campos");
                         }
 
-                        Usuario u = new Usuario(nombre, email, password, "BASIC");
+                        Usuario u = new Usuario(nombre, email, password, "REDACTOR");
                         if (save(u)) {
                             response.sendRedirect("http://" + localhost + "/AcmeNoticias/login");
                         } else {
