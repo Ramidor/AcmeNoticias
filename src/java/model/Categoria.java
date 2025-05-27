@@ -23,7 +23,9 @@ import java.util.List;
 @Table(name="categorias")
 @NamedQueries({
  @NamedQuery(name="Categoria.findAll", query="SELECT c FROM Categoria c"),
-    @NamedQuery(name="Categoria.findTipo", query="SELECT c.tipoCategoria FROM Categoria c")
+    @NamedQuery(name="Categoria.findTipo", query="SELECT c.tipoCategoria FROM Categoria c"),
+    @NamedQuery(name="Categoria.findNombre", query="SELECT c FROM Categoria c WHERE   c.tipoCategoria = :tipo"),
+    
 })
 
 public class Categoria implements Serializable {

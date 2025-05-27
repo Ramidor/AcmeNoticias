@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Articulo;
+import model.Categoria;
 import model.Usuario;
 import others.MD5Utils;
 
@@ -28,7 +29,7 @@ import others.MD5Utils;
  *
  * @author raulp
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/login/*", "/register/*", "/inicio"})
+@WebServlet(name = "LoginController", urlPatterns = {"/login/*", "/register/*"})
 public class LoginController extends HttpServlet {
 
     @PersistenceContext(unitName = "AcmeNoticiasPU")
@@ -72,16 +73,6 @@ public class LoginController extends HttpServlet {
             case "/register":
                 vista = "register";
                 break;
-
-            
-            case "/inicio":
-                List<Articulo> articulos;
-
-                TypedQuery<Articulo> query = em.createNamedQuery("Articulo.findAll", Articulo.class);
-                articulos = query.getResultList();
-                request.setAttribute("articulos", articulos);
-                vista = "main";
-                break;
             
             default:
                 vista = "error";
@@ -122,6 +113,7 @@ public class LoginController extends HttpServlet {
                         if (user != null) {
                             session = request.getSession();
                             session.setAttribute("email", user.getEmail());
+                            session.setAttribute("nombre", user.getNombre());
                             session.setAttribute("rol", user.getRol());
                             session.setAttribute("id", user.getId());
 

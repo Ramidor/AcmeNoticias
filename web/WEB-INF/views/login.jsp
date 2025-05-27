@@ -5,7 +5,6 @@
         <meta charset="UTF-8" />
         <title>Iniciar Sesión</title>
         <style>
-            /* Usamos la misma paleta de colores */
             :root {
                 --color-fondo: #F5F5F5;
                 --color-principal-claro: #48CFCB;
@@ -34,7 +33,7 @@
                 padding: 30px 40px;
                 border-radius: 10px;
                 box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-                width: 350px;
+                width: 400px;
                 text-align: center;
             }
 
@@ -55,7 +54,7 @@
                 margin-bottom: 5px;
             }
 
-            input[type="text"],
+            input[type="email"],
             input[type="password"] {
                 padding: 10px 12px;
                 border: 1.5px solid var(--color-principal-claro);
@@ -65,7 +64,7 @@
                 transition: border-color 0.3s ease;
             }
 
-            input[type="text"]:focus,
+            input[type="email"]:focus,
             input[type="password"]:focus {
                 border-color: var(--color-principal-oscuro);
                 outline: none;
@@ -107,8 +106,8 @@
                 <button type="submit">Entrar</button>
 
 
-                <c:if test="${not empty error}">
-                    <div class="error-message">${error}</div>
+                <c:if test="${not empty requestScope.msg}">
+                    <div class="error-message">${requestScope.msg}</div>
                 </c:if>
             </form>
         </div>

@@ -1,3 +1,4 @@
+<%@page import="java.util.List"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
@@ -16,12 +17,18 @@
 <section class="filtro-categorias">
     <form action="/AcmeNoticias/filtrarArticulos" method="get">
         <label for="categoria">Categoría:</label>
-        <select name="categoria" id="categoria">
-            <option value="">Todas</option>
-            <option value="Backend">Backend</option>
-            <option value="Frontend">Frontend</option>
-            <option value="Diseño">Diseño</option>
-            <option value="DevOps">DevOps</option>
+        <select id="categoria" name="categoria" required>
+                    <option value="">-- Selecciona una categoría --</option>
+                    <%
+                        List<String> categorias = (List<String>) request.getAttribute("Categorias");
+                        if (categorias != null) {
+                            for (String categoria : categorias) {
+                    %>
+                    <option value="<%= categoria%>"><%= categoria%></option>
+                    <%
+                            }
+                        }
+                    %>
         </select>
         <button type="submit">Filtrar</button>
     </form>
@@ -30,21 +37,21 @@
     <!-- ? Contenedor de artículos -->
 <div class="tarjetas-articulos-container">
     <c:choose>
-        <c:when test="${not empty articles}">
-            <c:forEach var="article" items="${articles}">
+        <c:when test="${not empty articulos}">
+            <c:forEach var="articulo" items="${articulos}">
                 <div class="tarjeta-articulo">
                     <div class="cabecera-articulo">
-                        <h3 class="titulo-articulo">${article.titulo}</h3>
+                        <h3 class="titulo-articulo">${articulo.titulo}</h3>
                         <div class="meta-articulo">
-                            <span class="autor-articulo">Autor: ${article.autor.nickname}</span>
-                            <span class="categoria-articulo"> | Categoría: ${article.categoria}</span>
+                            <span class="autor-articulo">Autor: ${articulo.autor.nombre}</span>
+                            <span class="categoria-articulo"> | Categoría: ${articulo.categoria.tipoCategoria}</span>
                         </div>
                     </div>
                     <div class="cuerpo-articulo">
                         <p class="fragmento-articulo">
-                            ${fn:substring(article.texto, 0, 300)}...
+                            ${fn:substring(articulo.cuerpo, 0, 300)}...
                         </p>
-                        <a href="verArticulo/${article.id}" class="leer-mas">Leer más</a>
+                        <a href="verArticulo/${articulo.id}" class="leer-mas">Leer más</a>
                     </div>
                 </div>
             </c:forEach>

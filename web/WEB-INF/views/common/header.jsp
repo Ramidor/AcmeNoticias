@@ -30,13 +30,13 @@
                 <!-- Redactor -->
                 <c:if test="${sessionScope.email != null && sessionScope.rol == 'REDACTOR'}">
                     <li class="nav-item">
-                        <a class="nav-link" href="crearArticulo.jsp">Nuevo Artículo</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/crearArticulo">Nuevo Artículo</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="misArticulos.jsp">Mis Artículos</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/verMisArticulos">Mis Artículos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="LogoutServlet">Cerrar sesión</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/login/logout">Cerrar sesión</a>
                     </li>
                 </c:if>
         </ul>
