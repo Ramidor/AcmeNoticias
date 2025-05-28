@@ -22,14 +22,13 @@ import java.util.List;
  *
  * @author raulp
  */
-
 @Entity
-@Table(name="articulos")
+@Table(name = "articulos")
 @NamedQueries({
- @NamedQuery(name="Articulo.findAll", query="SELECT a FROM Articulo a"),
- @NamedQuery(name="Articulo.findByAutor", query="SELECT a FROM Articulo a WHERE a.autor.email = :email"),
- @NamedQuery(name="Articulo.findByCategoria", query="SELECT a FROM Articulo a WHERE a.categoria.tipoCategoria = :categoria")
-        
+    @NamedQuery(name = "Articulo.findAll", query = "SELECT a FROM Articulo a"),
+    @NamedQuery(name = "Articulo.findByAutor", query = "SELECT a FROM Articulo a WHERE a.autor.email = :email"),
+    @NamedQuery(name = "Articulo.findByCategoria", query = "SELECT a FROM Articulo a WHERE a.categoria.tipoCategoria = :categoria")
+
 })
 public class Articulo implements Serializable {
 
@@ -41,6 +40,7 @@ public class Articulo implements Serializable {
     private String titulo;
     private String cuerpo;
     private String fechaPublicacion;
+    private boolean comentariosHabilitados = true;
 
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
@@ -56,12 +56,21 @@ public class Articulo implements Serializable {
     public Articulo() {
     }
 
-    public Articulo(String titulo, String cuerpo, Categoria categoria, String fechaPublicacion, Usuario autor) {
+    public Articulo(String titulo, String cuerpo, Categoria categoria, String fechaPublicacion, Usuario autor, boolean comentariosHabilitados) {
         this.titulo = titulo;
         this.cuerpo = cuerpo;
         this.categoria = categoria;
         this.fechaPublicacion = fechaPublicacion;
         this.autor = autor;
+        this.comentariosHabilitados = comentariosHabilitados;
+    }
+
+    public boolean isComentariosHabilitados() {
+        return comentariosHabilitados;
+    }
+
+    public void setComentariosHabilitados(boolean comentariosHabilitados) {
+        this.comentariosHabilitados = comentariosHabilitados;
     }
 
     public Long getId() {
@@ -136,7 +145,7 @@ public class Articulo implements Serializable {
     public void setAutor(Usuario autor) {
         this.autor = autor;
     }
-    
+
     public List<Comentario> getComentario() {
         return comentario;
     }
@@ -144,7 +153,5 @@ public class Articulo implements Serializable {
     public void setComentario(List<Comentario> comentario) {
         this.comentario = comentario;
     }
-    
-    
 
 }

@@ -1,7 +1,7 @@
 /* =======================
    🎨 Paleta de colores
    ======================= */
-:root {
+   :root {
     --color-fondo: #F5F5F5;
     --color-principal-claro: #48CFCB;
     --color-principal-oscuro: #229799;
@@ -104,7 +104,7 @@ body {
 /* =======================
    🏠 Header principal
    ======================= */
-.header-principal {
+   .header-principal {
     background-color: var(--color-principal-claro);
     padding: 15px 30px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
@@ -401,6 +401,7 @@ body {
 /* =======================
    📁 CRUD de Categorías
    ======================= */
+
 .crud-categorias-container {
     max-width: 800px;
     margin: 40px auto;
@@ -416,28 +417,28 @@ body {
     text-align: center;
 }
 
-.tabla-categorias {
+.crud-categorias-container .tabla-categorias {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
 }
 
-.tabla-categorias th,
-.tabla-categorias td {
+.crud-categorias-container .tabla-categorias th,
+.crud-categorias-container .tabla-categorias td {
     padding: 12px;
     border-bottom: 1px solid #ddd;
     text-align: left;
 }
 
-.tabla-categorias th {
+.crud-categorias-container .tabla-categorias th {
     background-color: var(--color-principal-claro);
     color: white;
     font-weight: bold;
 }
 
-.btn-editar,
-.btn-eliminar,
-.btn-agregar {
+.crud-categorias-container .btn-editar,
+.crud-categorias-container .btn-eliminar,
+.crud-categorias-container .btn-agregar {
     padding: 8px 12px;
     margin: 2px;
     border: none;
@@ -447,47 +448,90 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.btn-editar {
+.crud-categorias-container .btn-editar {
     background-color: var(--color-principal-claro);
     color: white;
 }
 
-.btn-eliminar {
+.crud-categorias-container .btn-eliminar {
     background-color: #d9534f;
     color: white;
 }
 
-.btn-agregar {
+.crud-categorias-container .btn-agregar {
     background-color: var(--color-principal-oscuro);
     color: white;
 }
 
-.btn-editar:hover {
+.crud-categorias-container .btn-editar:hover {
     background-color: var(--color-principal-oscuro);
 }
 
-.btn-eliminar:hover {
+.crud-categorias-container .btn-eliminar:hover {
     background-color: #c9302c;
 }
 
-.btn-agregar:hover {
+.crud-categorias-container .btn-agregar:hover {
     background-color: #1b6b6c;
 }
 
-.agregar-categoria form {
+.crud-categorias-container .agregar-categoria form {
     display: flex;
     gap: 10px;
     align-items: center;
     justify-content: center;
 }
 
-.agregar-categoria input[type="text"] {
+.crud-categorias-container .agregar-categoria input[type="text"] {
     padding: 8px;
     border-radius: 6px;
     border: 1.5px solid var(--color-principal-claro);
     font-size: 1em;
     width: 60%;
 }
+
+/* ==========================
+   ✏️ Modal para edición
+   ========================== */
+
+#editar-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#editar-modal .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    min-width: 300px;
+}
+
+#editar-modal .modal-content h3 {
+    margin-top: 0;
+}
+
+#editar-modal .modal-content input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+#editar-modal .modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
 
 
 /* ============================
@@ -531,4 +575,222 @@ body {
 /* 🔗 Enlaces del header admin */
 .header-principal .nav-principal ul li a {
     font-weight: bold;
+}
+
+
+/* =======================
+   👥 CRUD de Usuarios
+   ======================= */
+
+.crud-usuarios-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background-color: var(--color-tarjeta);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.crud-usuarios-container h2 {
+    color: var(--color-titulo);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.tabla-usuarios {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.tabla-usuarios th,
+.tabla-usuarios td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+
+.tabla-usuarios th {
+    background-color: var(--color-principal-claro);
+    color: white;
+    font-weight: bold;
+}
+
+.checkbox-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-cell input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-principal-claro);
+    cursor: pointer;
+}
+
+.checkbox-cell label {
+    font-weight: 500;
+    color: var(--color-texto);
+    cursor: pointer;
+}
+
+.boton-guardar-container {
+    text-align: center;
+}
+
+.btn-guardar {
+    background-color: var(--color-principal-oscuro);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-guardar:hover {
+    background-color: #1b6b6c;
+}
+.btn-editar {
+    background-color: var(--color-principal-claro);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-editar:hover {
+    background-color: var(--color-principal-oscuro);
+}
+
+.btn-eliminar {
+    background-color: #e74c3c; /* rojo fuerte */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-eliminar:hover {
+    background-color: #c0392b; /* rojo más oscuro */
+}
+
+
+.editar-comentario-page {
+    background-color: #F5F5F5;
+    font-family: 'Segoe UI', sans-serif;
+    color: #424242;
+}
+
+.editar-comentario-page .header-principal {
+    background-color: #48CFCB;
+    padding: 15px 30px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    border-radius: 0 0 8px 8px;
+}
+
+.editar-comentario-page .nav-principal ul {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    padding: 0;
+    margin: 0;
+}
+
+.editar-comentario-page .nav-principal ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+    transition: color 0.3s ease;
+}
+
+.editar-comentario-page .nav-principal ul li a:hover {
+    color: #229799;
+}
+
+.editar-comentario-page .editar-comentario-container {
+    max-width: 700px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.editar-comentario-page .editar-comentario-container h1 {
+    font-size: 1.8em;
+    color: #229799;
+    margin-bottom: 20px;
+}
+
+.editar-comentario-page .form-editar-comentario {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.editar-comentario-page .form-editar-comentario label {
+    font-weight: bold;
+}
+
+.editar-comentario-page .form-editar-comentario textarea {
+    font-size: 1em;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1.5px solid #48CFCB;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+}
+
+.editar-comentario-page .form-editar-comentario textarea:focus {
+    border-color: #229799;
+    outline: none;
+}
+
+.editar-comentario-page .acciones-form {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.editar-comentario-page .btn-guardar {
+    padding: 10px 24px;
+    background-color: #48CFCB;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.editar-comentario-page .btn-guardar:hover {
+    background-color: #229799;
+}
+
+.editar-comentario-page .btn-volver {
+    padding: 10px 20px;
+    background-color: #e0e0e0;
+    color: #333;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.editar-comentario-page .btn-volver:hover {
+    background-color: #c2c2c2;
 }

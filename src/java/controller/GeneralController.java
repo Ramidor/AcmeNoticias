@@ -140,15 +140,15 @@ public class GeneralController extends HttpServlet {
                         response.sendRedirect(request.getContextPath() + "/error.jsp");
                         return;
                     }
-
                     // Solo el autor puede editar
                     HttpSession sesion = request.getSession();
                     String email = (String) sesion.getAttribute("email");
-                    if (!articulo.getAutor().getEmail().equals(email)) {
+                    String rol = (String) sesion.getAttribute("rol");
+                    if (!articulo.getAutor().getEmail().equals(email) && !rol.equals("ADMIN")) {
+                        utx.rollback();
                         response.sendRedirect(request.getContextPath() + "/error.jsp");
                         return;
                     }
-
                     categorias = em.createNamedQuery("Categoria.findAll", Categoria.class).getResultList();
                     request.setAttribute("Categorias", categorias);
                     request.setAttribute("articulo", articulo);
@@ -188,6 +188,7 @@ public class GeneralController extends HttpServlet {
                     String titulo = request.getParameter("titulo");
                     String categoria = request.getParameter("categoria");
                     String texto = request.getParameter("texto");
+                    boolean comentariosHabilitados = request.getParameter("comentariosHabilitados") != null;
                     try {
                         utx.begin();
 
@@ -203,7 +204,7 @@ public class GeneralController extends HttpServlet {
                         TypedQuery<Usuario> query2 = em.createNamedQuery("Usuario.findByEmail", Usuario.class);
                         query2.setParameter("email", email);
                         u = query2.getSingleResult();
-                        Articulo a = new Articulo(titulo, texto, cat, fechaActual.toString(), u);
+                        Articulo a = new Articulo(titulo, texto, cat, fechaActual.toString(), u, comentariosHabilitados);
 
                         em.persist(a);
 
@@ -246,7 +247,8 @@ public class GeneralController extends HttpServlet {
 
                         // Verifica permisos
                         String email = (String) request.getSession().getAttribute("email");
-                        if (!articulo.getAutor().getEmail().equals(email)) {
+                        String rol = (String) request.getSession().getAttribute("rol");
+                        if (!articulo.getAutor().getEmail().equals(email) && !rol.equals("ADMIN")) {
                             utx.rollback();
                             response.sendRedirect(request.getContextPath() + "/error.jsp");
                             return;
@@ -263,8 +265,11 @@ public class GeneralController extends HttpServlet {
 
                         em.merge(articulo);
                         utx.commit();
-
-                        response.sendRedirect(request.getContextPath() + "/verMisArticulos");
+                        if (rol.equals("ADMIN")) {
+                            response.sendRedirect(request.getContextPath() + "/gestionArticulos");
+                        } else {
+                            response.sendRedirect(request.getContextPath() + "/verMisArticulos");
+                        }
                     } catch (Exception e) {
                         Log.severe("Error al editar artículo: " + e.getMessage());
                         try {
@@ -285,7 +290,8 @@ public class GeneralController extends HttpServlet {
 
                     // Seguridad: solo el autor puede eliminar
                     String email = (String) request.getSession().getAttribute("email");
-                    if (!articulo.getAutor().getEmail().equals(email)) {
+                    String rol = (String) request.getSession().getAttribute("rol");
+                    if (!articulo.getAutor().getEmail().equals(email) && !rol.equals("ADMIN")) {
                         utx.rollback();
                         response.sendRedirect(request.getContextPath() + "/error.jsp");
                         return;
@@ -293,7 +299,11 @@ public class GeneralController extends HttpServlet {
 
                     em.remove(em.merge(articulo));
                     utx.commit();
-                    response.sendRedirect(request.getContextPath() + "/verMisArticulos");
+                    if (rol.equals("ADMIN")) {
+                        response.sendRedirect(request.getContextPath() + "/gestionArticulos");
+                    } else {
+                        response.sendRedirect(request.getContextPath() + "/verMisArticulos");
+                    }
                 } catch (Exception e) {
                     Log.severe("Error al eliminar artículo: " + e.getMessage());
                     try {
@@ -336,7 +346,7 @@ public class GeneralController extends HttpServlet {
             comentario.setFechaPublicacion(java.time.LocalDate.now().toString());
             comentario.setArticulo(articulo);
             String nombre = (String) request.getSession().getAttribute("nombre");
-            if (nombre.isEmpty()) {
+            if (nombre == null) {
                 comentario.setAutor("Anónimo"); // O puedes extraerlo del usuario logueado en la sesión
             } else {
                 comentario.setAutor(nombre);

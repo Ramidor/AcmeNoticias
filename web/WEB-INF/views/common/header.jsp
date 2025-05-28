@@ -4,26 +4,26 @@
         <ul>
             <c:if test="${empty sessionScope.email}">
                     <li class="nav-item">
-                        <a class="nav-link" href="login">Iniciar Sesión</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/login">Iniciar Sesión</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="register">Registrarse</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/register">Registrarse</a>
                     </li>
                 </c:if>
 
                 <!-- Admin -->
                 <c:if test="${sessionScope.email != null && sessionScope.rol == 'ADMIN'}">
                     <li class="nav-item">
-                        <a class="nav-link" href="vistaAdmin.jsp">Panel Admin</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/gestionRedactores">Redactores</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="vistaCategorias.jsp">Categorías</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/gestionCategorias">Categorías</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="dashboard.jsp">Dashboard</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/gestionArticulos">Articulos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="LogoutServlet">Cerrar sesión</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/login/logout">Cerrar sesión</a>
                     </li>
                 </c:if>
 
