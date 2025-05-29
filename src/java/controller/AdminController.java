@@ -21,7 +21,8 @@ import model.Comentario;
 import model.Usuario;
 
 @WebServlet(name = "AdminController", urlPatterns = {"/gestionCategorias", "/gestionArticulos",
-    "/gestionRedactores", "/editarComentario/*","/eliminarComentario"})
+    "/gestionRedactores", "/editarComentario/*", "/eliminarComentario", "/dashBoard", "/crearCategoria",
+    "/editarCategoria", "/eliminarCategoria", "/error"})
 public class AdminController extends HttpServlet {
 
     @PersistenceContext(unitName = "AcmeNoticiasPU")
@@ -42,20 +43,33 @@ public class AdminController extends HttpServlet {
         String accion = request.getServletPath();
         String info = request.getPathInfo();
         HttpSession session = request.getSession();
+        String rol = (String) session.getAttribute("rol");
         switch (accion) {
             case "/gestionCategorias":
+                if (rol == null || !rol.equals("ADMIN")) {
+                    response.sendRedirect(request.getContextPath() + "/error");
+                    return;
+                }
                 TypedQuery<Categoria> queryCategoria = em.createNamedQuery("Categoria.findAll", Categoria.class);
                 List<Categoria> categorias = queryCategoria.getResultList();
                 request.setAttribute("categorias", categorias);
                 vista = "gestionCategorias";
                 break;
             case "/gestionArticulos":
+                if (rol == null || !rol.equals("ADMIN")) {
+                    response.sendRedirect(request.getContextPath() + "/error");
+                    return;
+                }
                 TypedQuery<Articulo> queryArticulo = em.createNamedQuery("Articulo.findAll", Articulo.class);
                 List<Articulo> articulos = queryArticulo.getResultList();
                 request.setAttribute("articulos", articulos);
                 vista = "misArticulos";
                 break;
             case "/gestionRedactores":
+                if (rol == null || !rol.equals("ADMIN")) {
+                    response.sendRedirect(request.getContextPath() + "/error");
+                    return;
+                }
                 TypedQuery<Usuario> queryUsuario = em.createNamedQuery("Usuario.findAll", Usuario.class);
                 List<Usuario> usuarios = queryUsuario.getResultList();
                 request.setAttribute("usuarios", usuarios);
@@ -67,7 +81,38 @@ public class AdminController extends HttpServlet {
                 request.setAttribute("comentario", comentario);
                 vista = "editarComentario";
                 break;
+            case "/dashBoard":
+                // Seguridad: solo ADMIN puede acceder
+                if (rol == null || !rol.equals("ADMIN")) {
+                    response.sendRedirect(request.getContextPath() + "/error");
+                    return;
+                }
 
+                try {
+                    // 1. Calcular media de comentarios por artículo
+                    Double mediaComentarios = em.createQuery(
+                            "SELECT AVG(SIZE(a.comentario)) FROM Articulo a", Double.class)
+                            .getSingleResult();
+                    if (mediaComentarios == null) {
+                        mediaComentarios = 0.0;
+                    }
+
+                    // 2. Obtener top 5 artículos con más comentarios
+                    List<Articulo> topArticulos = em.createQuery(
+                            "SELECT a FROM Articulo a LEFT JOIN a.comentario c GROUP BY a ORDER BY COUNT(c) DESC", Articulo.class)
+                            .setMaxResults(5)
+                            .getResultList();
+
+                    // 4. Enviar datos a la vista
+                    request.setAttribute("mediaComentarios", mediaComentarios);
+                    request.setAttribute("topArticulos", topArticulos);
+                    vista = "adminDashboard";
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response.sendRedirect(request.getContextPath() + "/error");
+                }
+                break;
             default:
                 vista = "error";
                 break;
@@ -86,25 +131,32 @@ public class AdminController extends HttpServlet {
         String accion = request.getServletPath();
         String info = request.getPathInfo();
         HttpSession session = request.getSession();
+        String rol = (String) session.getAttribute("rol");
+        Long id;
         switch (accion) {
             case "/editarComentario":
                 try {
                     utx.begin();
-                    Long id = Long.parseLong(request.getParameter("comentarioId"));
+                    id = Long.parseLong(request.getParameter("comentarioId"));
                     Comentario comentario = em.find(Comentario.class, id);
                     Articulo a = comentario.getArticulo();
                     a.getComentario().remove(comentario);
-                    
+
                     String texto = request.getParameter("contenido");
                     comentario.setTexto(texto);
-                    
-                    
+
+                    String email = (String) request.getSession().getAttribute("email");
+                    if (!a.getAutor().getEmail().equals(email) && !rol.equals("ADMIN")) {
+                        utx.rollback();
+                        response.sendRedirect(request.getContextPath() + "/error");
+                        return;
+                    }
                     em.persist(comentario);
-                    
+
                     a.getComentario().add(comentario);
                     em.merge(a);
                     utx.commit();
-                    response.sendRedirect("http://" + localhost + "/AcmeNoticias/verArticulo/"+a.getId());
+                    response.sendRedirect("http://" + localhost + "/AcmeNoticias/verArticulo/" + a.getId());
                 } catch (Exception e) {
                     try {
                         // Si hay un error, hacer rollback de la transacción
@@ -121,24 +173,24 @@ public class AdminController extends HttpServlet {
                 break;
             case "/eliminarComentario":
                 try {
+
                     utx.begin();
-                    Long id = Long.parseLong(request.getParameter("comentarioId"));
+                    id = Long.parseLong(request.getParameter("comentarioId"));
                     Comentario comentario = em.find(Comentario.class, id);
                     Articulo a = comentario.getArticulo();
                     a.getComentario().remove(comentario);
 
                     // Seguridad: solo el autor puede eliminar
                     String email = (String) request.getSession().getAttribute("email");
-                    String rol = (String) request.getSession().getAttribute("rol");
                     if (!a.getAutor().getEmail().equals(email) && !rol.equals("ADMIN")) {
                         utx.rollback();
-                        response.sendRedirect(request.getContextPath() + "/error.jsp");
+                        response.sendRedirect(request.getContextPath() + "/error");
                         return;
                     }
 
                     em.remove(em.merge(comentario));
                     utx.commit();
-                    response.sendRedirect("http://" + localhost + "/AcmeNoticias/verArticulo/"+a.getId());
+                    response.sendRedirect("http://" + localhost + "/AcmeNoticias/verArticulo/" + a.getId());
                 } catch (Exception e) {
                     Log.severe("Error al eliminar comentario: " + e.getMessage());
                     try {
@@ -149,7 +201,81 @@ public class AdminController extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/error");
                 }
                 break;
+            case "/crearCategoria":
+                String nombre = request.getParameter("nombre");
 
+                try {
+                    utx.begin();
+                    Categoria nueva = new Categoria();
+                    nueva.setTipoCategoria(nombre);
+                    em.persist(nueva);
+                    utx.commit();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    try {
+                        utx.rollback();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
+                response.sendRedirect(request.getContextPath() + "/gestionCategorias");
+                break;
+            case "/editarCategoria":
+                id = Long.parseLong(request.getParameter("id"));
+                String nom = request.getParameter("nombre");
+
+                try {
+                    utx.begin();
+                    if (rol == null || !rol.equals("ADMIN")) {
+                        response.sendRedirect(request.getContextPath() + "/error");
+                        return;
+                    }
+                    Categoria categoria = em.find(Categoria.class, id);
+                    if (categoria != null) {
+                        categoria.setTipoCategoria(nom);
+                        em.merge(categoria);
+                    }
+                    utx.commit();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    try {
+                        utx.rollback();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
+                response.sendRedirect(request.getContextPath() + "/gestionCategorias");
+                break;
+            case "/eliminarCategoria":
+                id = Long.parseLong(request.getParameter("id"));
+
+                try {
+                    utx.begin();
+                    if (rol == null || !rol.equals("ADMIN")) {
+                        response.sendRedirect(request.getContextPath() + "/error");
+                        return;
+                    }
+                    Categoria categoria = em.find(Categoria.class, id);
+                    if (categoria != null) {
+                        em.remove(categoria);
+                    }
+                    utx.commit();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    try {
+                        utx.rollback();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
+                response.sendRedirect(request.getContextPath() + "/gestionCategorias");
+                break;
+            default:
+                vista = "error";
+                break;
         }
 
         if (!vista.equals("")) {

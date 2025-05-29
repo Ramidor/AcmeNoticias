@@ -1,9 +1,3 @@
-<%-- 
-    Document   : error
-    Created on : 21 nov 2024, 9:04:51
-    Author     : raulp
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>

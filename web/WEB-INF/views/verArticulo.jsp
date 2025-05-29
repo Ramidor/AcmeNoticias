@@ -25,12 +25,12 @@
                 <a href="/AcmeNoticias/inicio" class="volver-enlace">Volver a artículos</a>
 
                 <c:if test="${sessionScope.email != null && sessionScope.rol == 'ADMIN'}">
-                    <form action="/AcmeNoticias/editarArticulo" method="get" style="display:inline;">
+                    <form action="${pageContext.request.contextPath}/editarArticulo/${articulo.id}" method="get" style="display:inline;">
                         <input type="hidden" name="id" value="${articulo.id}" />
                         <button type="submit" class="btn-editar">Editar</button>
                     </form>
 
-                    <form action="/AcmeNoticias/eliminarArticulo" method="post" style="display:inline;" onsubmit="return confirm('¿Seguro que quieres eliminar este artículo?');">
+                    <form action="${pageContext.request.contextPath}/eliminarArticulo" method="post" style="display:inline;" onsubmit="return confirm('¿Seguro que quieres eliminar este artículo?');">
                         <input type="hidden" name="id" value="${articulo.id}" />
                         <button type="submit" class="btn-eliminar">Eliminar</button>
                     </form>

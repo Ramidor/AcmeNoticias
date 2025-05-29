@@ -52,6 +52,7 @@ public class GeneralController extends HttpServlet {
         String accion = request.getServletPath();
         String info = request.getPathInfo();
         HttpSession session = request.getSession();
+        String rol = (String) session.getAttribute("rol");
         List<Categoria> categorias;
         List<Articulo> articulos;
         switch (accion) {
@@ -123,6 +124,10 @@ public class GeneralController extends HttpServlet {
                 }
                 break;
             case "/crearArticulo":
+                if (rol == null || !rol.equals("REDACTOR")) {
+                            response.sendRedirect(request.getContextPath() + "/error");
+                            return;
+                        }
                 queryCategoria = em.createNamedQuery("Categoria.findAll", Categoria.class);
                 categorias = queryCategoria.getResultList();
                 request.setAttribute("Categorias", categorias);
@@ -137,16 +142,15 @@ public class GeneralController extends HttpServlet {
                     Long id = Long.parseLong(info.substring(1));
                     Articulo articulo = em.find(Articulo.class, id);
                     if (articulo == null) {
-                        response.sendRedirect(request.getContextPath() + "/error.jsp");
+                        response.sendRedirect(request.getContextPath() + "/error");
                         return;
                     }
                     // Solo el autor puede editar
                     HttpSession sesion = request.getSession();
                     String email = (String) sesion.getAttribute("email");
-                    String rol = (String) sesion.getAttribute("rol");
                     if (!articulo.getAutor().getEmail().equals(email) && !rol.equals("ADMIN")) {
                         utx.rollback();
-                        response.sendRedirect(request.getContextPath() + "/error.jsp");
+                        response.sendRedirect(request.getContextPath() + "/error");
                         return;
                     }
                     categorias = em.createNamedQuery("Categoria.findAll", Categoria.class).getResultList();
@@ -177,7 +181,8 @@ public class GeneralController extends HttpServlet {
 
         String accion = request.getServletPath();
         String info = request.getPathInfo();
-        HttpSession session;
+        HttpSession session = request.getSession();
+        String rol = (String) session.getAttribute("rol");
 
         switch (accion) {
             case "/agregarComentario":
@@ -191,7 +196,10 @@ public class GeneralController extends HttpServlet {
                     boolean comentariosHabilitados = request.getParameter("comentariosHabilitados") != null;
                     try {
                         utx.begin();
-
+                        if (rol == null || !rol.equals("REDACTOR")) {
+                            response.sendRedirect(request.getContextPath() + "/error");
+                            return;
+                        }
                         Categoria cat;
                         TypedQuery<Categoria> query = em.createNamedQuery("Categoria.findNombre", Categoria.class);
                         query.setParameter("tipo", categoria);
@@ -247,10 +255,9 @@ public class GeneralController extends HttpServlet {
 
                         // Verifica permisos
                         String email = (String) request.getSession().getAttribute("email");
-                        String rol = (String) request.getSession().getAttribute("rol");
                         if (!articulo.getAutor().getEmail().equals(email) && !rol.equals("ADMIN")) {
                             utx.rollback();
-                            response.sendRedirect(request.getContextPath() + "/error.jsp");
+                            response.sendRedirect(request.getContextPath() + "/error");
                             return;
                         }
 
@@ -277,7 +284,7 @@ public class GeneralController extends HttpServlet {
                         } catch (Exception ex) {
                             Log.severe("Rollback fallido: " + ex.getMessage());
                         }
-                        response.sendRedirect(request.getContextPath() + "/error.jsp");
+                        response.sendRedirect(request.getContextPath() + "/error");
                     }
                 }
                 break;
@@ -290,10 +297,9 @@ public class GeneralController extends HttpServlet {
 
                     // Seguridad: solo el autor puede eliminar
                     String email = (String) request.getSession().getAttribute("email");
-                    String rol = (String) request.getSession().getAttribute("rol");
                     if (!articulo.getAutor().getEmail().equals(email) && !rol.equals("ADMIN")) {
                         utx.rollback();
-                        response.sendRedirect(request.getContextPath() + "/error.jsp");
+                        response.sendRedirect(request.getContextPath() + "/error");
                         return;
                     }
 
@@ -311,7 +317,7 @@ public class GeneralController extends HttpServlet {
                     } catch (Exception ex) {
                         Log.severe("Rollback fallido: " + ex.getMessage());
                     }
-                    response.sendRedirect(request.getContextPath() + "/error.jsp");
+                    response.sendRedirect(request.getContextPath() + "/error");
                 }
                 break;
 

@@ -5,20 +5,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Administrador</title>
-    <link rel="stylesheet" type="text/css" href="./VistaArticuloStyle.css">
+    <link href="${pageContext.request.contextPath}/css/principal.css" rel="stylesheet"/>
 </head>
-<jsp:include page="common/header.jsp"/>
+
 <body>
 
-<header class="header-principal">
-    <nav class="nav-principal">
-        <ul>
-            <li><a href="/HeroKeeper/home">Menú</a></li>
-            <li><a href="/HeroKeeper/perfil">Perfil</a></li>
-            <li><a href="/HeroKeeper/logout">Cerrar sesión</a></li>
-        </ul>
-    </nav>
-</header>
+<jsp:include page="common/header.jsp"/>
 
 <!-- ? Estadísticas generales -->
 <section class="dashboard-estadisticas">
@@ -30,20 +22,20 @@
 <section class="dashboard-top-articulos">
     <h2>Top 5 Artículos con Más Comentarios</h2>
     <div class="tarjetas-articulos-container">
-        <c:forEach var="article" items="${topArticulos}">
+        <c:forEach var="articulo" items="${topArticulos}">
             <div class="tarjeta-articulo">
                 <div class="cabecera-articulo">
-                    <h3 class="titulo-articulo">${article.titulo}</h3>
+                    <h3 class="titulo-articulo">${articulo.titulo}</h3>
                     <div class="meta-articulo">
-                        <span class="autor-articulo">Autor: ${article.autor.nickname}</span>
-                        <span class="categoria-articulo"> | Comentarios: ${article.numeroComentarios}</span>
+                        <span class="autor-articulo">Autor: ${articulo.autor.nombre}</span>
+                        <span class="categoria-articulo"> | Categoria: ${articulo.categoria.tipoCategoria}</span>
                     </div>
                 </div>
                 <div class="cuerpo-articulo">
                     <p class="fragmento-articulo">
-                        ${fn:substring(article.texto, 0, 300)}...
+                        ${fn:substring(articulo.cuerpo, 0, 300)}...
                     </p>
-                    <a href="verArticulo/${article.id}" class="leer-mas">Leer más</a>
+                    <a href="verArticulo/${articulo.id}" class="leer-mas">Leer más</a>
                 </div>
             </div>
         </c:forEach>

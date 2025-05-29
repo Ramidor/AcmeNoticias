@@ -22,7 +22,7 @@
     </script>
 </head>
 <body>
-
+<%@include file="common/header.jsp" %>
 <div class="crud-categorias-container">
     <h2>Gestión de Categorías</h2>
 
